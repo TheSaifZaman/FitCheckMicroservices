@@ -20,7 +20,6 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-
     @PostMapping("/")
     public ResponseEntity<UserResponse> register(@Valid @RequestBody RegisterRequest request) {
         UserResponse response = userService.register(request);
