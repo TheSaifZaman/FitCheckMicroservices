@@ -28,4 +28,11 @@ class UserControllerTest {
         userController.register(request);
         Mockito.verify(userService, Mockito.times(1)).register(request);
     }
+
+    @Test
+    void getUserById() {
+        String userId = "12345";
+        userController.getUserById(userId);
+        Mockito.verify(userService, Mockito.times(1)).getUserById(userId);
+    }
 }
