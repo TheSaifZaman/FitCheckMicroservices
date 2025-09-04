@@ -5,10 +5,12 @@ import com.fitcheck.userservice.dto.UserResponse;
 import com.fitcheck.userservice.interfaces.UserRepository;
 import com.fitcheck.userservice.models.User;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
@@ -47,6 +49,7 @@ public class UserService {
     }
 
     public Boolean validateUserById(String userId) {
+        log.info("Validating user ID: {}", userId);
         return userRepository.existsById(userId);
     }
 }
