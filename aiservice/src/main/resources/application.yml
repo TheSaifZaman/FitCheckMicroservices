@@ -7,6 +7,19 @@ spring:
       uri: mongodb://localhost:27017/airecommendationfitcheck
       database: airecommendationfitcheck
 
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: activity-event-consumer-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.use.type.headers: false
+        spring.json.value.default.type: com.fitcheck.aiservice.events.ActivityEvent
+        spring.json.trusted.packages: "*"
+    topic:
+      name: activity-events
+
 eureka:
   client:
     serviceUrl:

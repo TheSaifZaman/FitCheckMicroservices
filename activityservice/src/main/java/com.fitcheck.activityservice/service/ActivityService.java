@@ -1,10 +1,12 @@
 package com.fitcheck.activityservice.service;
 
-import com.fitcheck.activityservice.ActivityRepository;
+import com.fitcheck.activityservice.controller.ActivityRepository;
 import com.fitcheck.activityservice.dto.ActivityResponse;
 import com.fitcheck.activityservice.dto.ActivityStoreRequest;
 import com.fitcheck.activityservice.model.Activity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,6 +14,10 @@ import org.springframework.stereotype.Service;
 public class ActivityService {
     private final ActivityRepository activityRepository;
     private final UserValidationService userValidationService;
+    private final KafkaTemplate<String, Activity> kafkaTemplate;
+
+    @Value("${kafka.topic.name}")
+    private String topicName;
 
     public ActivityResponse store(ActivityStoreRequest request) {
         if (!userValidationService.validateUserId(request.getUserId())) {
@@ -26,6 +32,11 @@ public class ActivityService {
                 .additionalMetrics(request.getAdditionalMetrics())
                 .build();
         Activity savedActivity = activityRepository.save(activity);
+        try{
+            kafkaTemplate.send(topicName, savedActivity.getUserId(), savedActivity);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return getActivityResponse(savedActivity);
     }
 
