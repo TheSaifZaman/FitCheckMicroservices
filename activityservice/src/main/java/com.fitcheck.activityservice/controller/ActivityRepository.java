@@ -1,4 +1,4 @@
-package com.fitcheck.activityservice;
+package com.fitcheck.activityservice.controller;
 
 import com.fitcheck.activityservice.model.Activity;
 import org.springframework.data.mongodb.repository.MongoRepository;
